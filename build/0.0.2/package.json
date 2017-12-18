@@ -1,0 +1,35 @@
+{
+    "name": "web-master",
+    "version": "0.0.2",
+    "description": "auto web develop tool, support ES6.",
+    "main": "index.js",
+    "scripts": {
+    },
+    "keywords": [
+        "auto",
+        "weber",
+        "partial"
+    ],
+    "author": {
+        "name": "mictydeng",
+        "email": "mictydeng@qq.com"
+    },
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/micty/autoweber.git"
+    },
+    "dependencies": {
+        "colors": "",
+        "defineJS": "",
+        "gaze": "",
+        "html-minifier": "",
+        "iconv-lite": "",
+        "less": "",
+        "minimatch": "",
+        "uglify-es": ""
+    },
+    "devDependencies": {
+        
+    }
+}
