@@ -1,0 +1,17 @@
+{
+    "name": "web-master-demo",
+    "version": "",
+    "repository": { },
+    "description": "web master demo",
+    "dependencies": {
+
+        "cheerio": ""
+
+    },
+    "devDependencies": {
+        "web-master": ""
+    },
+    "engines": {
+        "node": ">=0.8.0"
+    }
+}

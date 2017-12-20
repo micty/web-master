@@ -1,0 +1,34 @@
+{
+    "name": "web-master",
+    "version": "1.0.1",
+    "description": "auto web develop tool, support ES6.",
+    "main": "index.js",
+    "scripts": {
+    },
+    "keywords": [
+        "auto",
+        "weber",
+        "partial"
+    ],
+    "author": {
+        "name": "mictydeng",
+        "email": "mictydeng@qq.com"
+    },
+    "license": "ISC",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/micty/web-master.git"
+    },
+    "dependencies": {
+        "colors": "1.1.2",
+        "gaze": "1.1.2",
+        "html-minifier": "3.5.5",
+        "iconv-lite": "0.4.19",
+        "less": "2.7.2",
+        "minimatch": "3.0.4",
+        "uglify-es": "3.1.1"
+    },
+    "devDependencies": {
+
+    }
+}

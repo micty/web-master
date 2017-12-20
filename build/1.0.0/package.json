@@ -17,7 +17,7 @@
     "license": "ISC",
     "repository": {
         "type": "git",
-        "url": "git://github.com/micty/autoweber.git"
+        "url": "git://github.com/micty/web-master.git"
     },
     "dependencies": {
         "colors": "1.1.2",

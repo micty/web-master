@@ -1,6 +1,8 @@
 
 /.svn
-/bin/node_modules
+/bin/node_modules/
+/build/**/node_modules/
+
 /test/
-
-
+/test2/
+/weberp/

@@ -14,7 +14,7 @@ module.exports = function (grunt) {
             },
             node_modules: [
                 '../src/node_modules/',
-                //dest + '/node_modules/',
+                '../build/**/node_modules/',
             ],
         },
 
