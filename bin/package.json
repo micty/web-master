@@ -1,15 +1,12 @@
-
 {
     "name": "web-master",
     "version": "",
     "dependencies": {},
-    
     "devDependencies": {
         "grunt": "",
         "grunt-contrib-copy": "",
         "grunt-contrib-clean": ""
-    }, 
-
+    },
     "engines": {
         "node": ">=0.8.0"
     }
