@@ -2,18 +2,13 @@
 /**
 * 
 */
-define('MasterPage/HtmlBlocks', function (require, module, exports) {
+define('MasterPage/JsBlocks', function (require, module, exports) {
     var $ = require('$');
-    var $String = $.require('String');
     var Tasks = $.require('Tasks');
-
-    var Path = require('Path');
     var Lines = require('Lines');
-    var File = require('File');
-
-
     var BlockList = require('BlockList');
-    var HtmlBlock = require('HtmlBlock');
+    var JsBlock = require('JsBlock');
+    var Path = require('Path');
 
 
     return exports = {
@@ -23,14 +18,12 @@ define('MasterPage/HtmlBlocks', function (require, module, exports) {
         */
         parse: function (meta) {
             //解析出来的新列表，尽量复用之前创建的实例。
-            var file$block = meta.patterns$HtmlBlock;     //当前集合。
-            var old$block = meta.old.patterns$HtmlBlock;  //旧集合。
+            var file$block = meta.patterns$JsBlock;     //当前集合。
+            var old$block = meta.old.patterns$JsBlock;  //旧集合。
             var news = [];  //需要新建的。
             var olds = [];  //可以复用的。
 
-            var list = BlockList.parse(meta.lines, meta.tags.html);
-
-            //console.log(list);
+            var list = BlockList.parse(meta.lines, meta.tags.js);
 
             list.forEach(function (item) {
                 var file = item.patterns.join();    //把整个路径模式看作一个整体。
@@ -41,15 +34,15 @@ define('MasterPage/HtmlBlocks', function (require, module, exports) {
                     return;
                 }
 
-                item.isOld = true;
                 olds.push(file);
-                item.block = file$block[file] = block;
+                item.isOld = true;                  //新增字段
+                item.block = file$block[file] = block; //新增字段
 
                 //同一个路径模式对应的实例只能给复用一次。
                 //如果后续再遇到相同的路径模式，则只能新建一个，
                 //不过，这种情况在现实中几乎不可能出现，
                 //因为同一个页面中出现多个完全相同的路径模式没任何意义。
-                delete old$block[file];
+                delete old$block[file];  
             });
 
 
@@ -62,16 +55,16 @@ define('MasterPage/HtmlBlocks', function (require, module, exports) {
                     return;
                 }
 
-                block = new HtmlBlock({
+                block = new JsBlock({
                     'dir': meta.dir,
                     'patterns': item.patterns,
-                    'excludes': meta.excludes['html'],
+                    'excludes': meta.excludes['js'],
                     'delay': 0,
                 });
 
                 block.parse({
                     error: function (file) {
-                        console.log('不存在 html 文件'.bgRed, file.bgRed);
+                        console.log('不存在 js 文件'.bgRed, file.bgRed);
                         console.log('所在的 html 文件'.bgCyan, meta.file.cyan);
 
                         file = Path.relative(meta.dir, file);
@@ -81,7 +74,9 @@ define('MasterPage/HtmlBlocks', function (require, module, exports) {
                     },
                 });
 
+
                 item.block = file$block[file] = block;
+
             });
 
             //释放备份中没有复用到的实例。
@@ -100,44 +95,87 @@ define('MasterPage/HtmlBlocks', function (require, module, exports) {
 
 
         /**
-        * 
+        *
         */
         render: function (meta, done) {
-
-            meta.HtmlBlocks.forEach(function (item) {
+            meta.JsBlocks.forEach(function (item) {
 
                 var html = item.block.render({
                     'tabs': item.tabs,
+                    'md5': 4,
                 });
 
                 Lines.replace(meta.lines, item.begin, item.end, html);
+
             });
 
             done();
         },
 
+
         /**
         *
         */
         watch: function (meta) {
-            meta.HtmlBlocks.forEach(function (item) {
+
+            meta.JsBlocks.forEach(function (item) {
                 if (item.isOld) { //复用过来的，不需要重新绑定。
                     return;
                 }
 
                 item.block.on('change', function () {
+
                     var html = this.render({
                         'tabs': item.tabs,
+                        'md5': 4,
                     });
 
                     Lines.replace(meta.lines, item.begin, item.end, html);
+
                     meta.mix(true);
+
                 });
 
                 item.block.watch();
 
             });
 
+        },
+
+
+        /**
+        * 构建。
+        *   options = {
+        *       begin: '',          //闭包的头片段文件路径。
+        *       end: '',            //闭包的尾片段文件路径。
+        *       minify: false,      //是否压缩。
+        *       inline: false,      //是否内联。
+        *       name: '{md5}'.js,   //输出的目标文件路径，支持 `{md5}` 模板字段。 目录为当前页面所在的目录。
+        *       props: {},          //生成到标签里的其它属性。
+        *       query: {},          //生成标签 src 属性里的 query 部分。 
+        *   };
+        */
+        build: function (meta, options, done) {
+
+            meta.JsBlocks.forEach(function (item) {
+
+                var html = item.block.build({
+                    'tabs': item.tabs,
+
+                    'begin': options.begin,
+                    'end': options.end,
+                    'minify': options.minify,
+                    'inline': options.inline,
+                    'name': options.name,
+                    'props': options.props,
+                    'query': options.query,
+                });
+
+                Lines.replace(meta.lines, item.begin, item.end, html);
+
+            });
+
+            done();
         },
     };
     
