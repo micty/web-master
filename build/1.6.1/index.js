@@ -1,4 +1,4 @@
-﻿
+
 var $ = require('defineJS');
 var Args = require('./args');
 var _require = require;             //node.js 原生的 require，备份一下。
@@ -15,7 +15,7 @@ module.exports = {
     * 版本号。
     * 由 grunt 自动插入。
     */
-    version: /**{version*/''/**version}*/,
+    version: '1.6.1',
 
     /**
     * 绑定事件。
