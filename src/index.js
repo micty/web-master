@@ -15,7 +15,7 @@ module.exports = {
     * 版本号。
     * 由 grunt 自动插入。
     */
-    version: /**{version*/''/**version}*/,
+    version: '1.6.1',
 
     /**
     * 绑定事件。
@@ -110,11 +110,15 @@ module.exports = {
             var Edition = require('Edition');
             var Css = require('Css');
             var Js = require('Js');
+            var File = require('File');
 
             
             var website = new WebSite(defaults);
             var templates = defaults.templates || {};
             var tags = defaults.tags;
+            var packageJSON = File.readJSON('./package.json');
+            var name = packageJSON.name;
+
 
             //首次创建。
             emitter = new Emitter();
@@ -131,6 +135,8 @@ module.exports = {
             //设置相应模块的默认配置。
             Console.config(defaults.console);
             Watcher.config(defaults.watcher);
+            Watcher.config({ 'name': name, }); //用于监控完成后提示项目的名称。
+
             Edition.config(defaults.edition);
 
             if (tags) {
@@ -147,6 +153,7 @@ module.exports = {
 
 
             exports = {
+                'name': name,
                 'website': website,
                 'begin': begin,
                 'emitter': emitter,
@@ -184,7 +191,7 @@ module.exports = {
             //监控完成后。
             website.on('watch', function () {
                 var time = new Date() - begin;
-                console.log('耗时'.bgGreen, time.toString().cyan, 'ms');
+                console.log('耗时'.gray, time.toString().cyan, 'ms');
 
 
                 emitter.on({
